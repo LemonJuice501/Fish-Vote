@@ -13,7 +13,7 @@ else:
     pickle.dump(fish_score_temp,open('fishscore.dat','wb'))
 password = 'amogis@1984'
 
-
+print(fish_score_temp)
 
 
 
@@ -96,6 +96,9 @@ while True:
 
         continue
     if event == sg.WINDOW_CLOSED:
+        open('fishscore.dat', 'w').close()
+        open('fishscore.dat', 'wb')
+        pickle.dump(fish_score_temp, open('fishscore.dat', 'wb'))
         sys.exit()
     if event == 'See results so far':
         print(fish_score_temp[7][1][0])
@@ -143,5 +146,6 @@ window.close()
 open('fishscore.dat','w').close()
 open('fishscore.dat','wb')
 pickle.dump(fish_score_temp,open('fishscore.dat','wb'))
-    
-     
+       
+
+
