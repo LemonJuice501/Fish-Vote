@@ -2,6 +2,8 @@ import PySimpleGUI as sg
 import random
 import pickle
 import os
+import sys
+import time
 if os.path.isfile('fishscore.dat'):
     fish_score_temp = pickle.load(open('fishscore.dat', 'rb'))
 
@@ -9,6 +11,7 @@ else:
     fish_score_temp = [['fish1',[0]],['fish2',[0]],['fish3',[0]],['fish4',[0]],['fish5',[0]],['fish6',[0]],['fish7',[0]],['fish8',[0]],['fish9',[0]],['fish10',[0]]]
     open('fishscore.dat','wb')
     pickle.dump(fish_score_temp,open('fishscore.dat','wb'))
+password = 'amogis@1984'
 
 
 
@@ -26,23 +29,54 @@ while True:
     if event == 'Generate a fish pairing':
 
         break
+    if event == sg.WIN_CLOSED:
+        sys.exit()
+
 fish_status = 'fish'
 fish_status2 = 'fish'
 
 while True:
-    random_1 = random.randint(0,9)
-    random_2 = random.randint(0,9)
+    while True:
+        random_1 = random.randint(0,9)
+        random_2 = random.randint(0,9)
+        if random_1 == random_2:
+            continue
+        else:
+            break
     fish_status = 'fish' + str(random_1 + 1)
     fish_status2 = 'fish' + str(random_2 + 1)
+
     print(fish_status)
     window.close()
     file_temp = r'C:\Users\koreg\OneDrive\Pictures' + '\\' + fish_status + '.png'
     file_temp_2 = r'C:\Users\koreg\OneDrive\Pictures' + '\\' + fish_status2 + '.png'
     file = file_temp
-    layout = [[sg.Image(filename=file)],[sg.Image(filename=file_temp_2)],[sg.Button('Press for more fish')],[sg.Button('Press to close')],[sg.Button('Vote for top fish')],[sg.Button('Vote for bottom fish')],[sg.Button('See results so far')]]
+    layout = [[sg.Image(filename=file)],
+              [sg.Image(filename=file_temp_2)],
+              [sg.Button('Press for more fish')],
+              [sg.Button('Press to close')],
+              [sg.Button('Vote for top fish')],
+              [sg.Button('Vote for bottom fish')],
+              [sg.Button('See results so far')],
+              [sg.Button('Reset votes, enter password below')],
+              [sg.Text('Enter password'), sg.InputText('', size=(10,1), key='password_temp')]]
     window = sg.Window('Fish', layout)
     event, values = window.read()
     print(fish_score_temp)
+    if event == 'Reset votes, enter password below':
+        password_temp = values['password_temp']
+        if password_temp == password:
+            fish_score_temp = [['fish1', [0]], ['fish2', [0]], ['fish3', [0]], ['fish4', [0]], ['fish5', [0]],
+                               ['fish6', [0]], ['fish7', [0]], ['fish8', [0]], ['fish9', [0]], ['fish10', [0]]]
+            open('fishscore.dat', 'wb')
+            pickle.dump(fish_score_temp, open('fishscore.dat', 'wb'))
+        else:
+            layout = [[sg.Text('Incorrect password')]]
+            window = sg.Window('Password error', layout)
+            event, values = window.read()
+            time.sleep(10)
+            window.close()
+
     if event == 'Vote for top fish':
 
         fish_score_temp[random_1][1][0] = int(fish_score_temp[random_1][1][0]) + 1
@@ -55,37 +89,41 @@ while True:
     if event == 'Press for more fish':
 
         continue
+    if event == sg.WINDOW_CLOSED:
+        sys.exit()
     if event == 'See results so far':
         print(fish_score_temp[7][1][0])
         window.close()
         col1 = [[sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish1.png')],
-                  [sg.Text('Has,'+ str(fish_score_temp[0][1][0]) + 'votes')],
+                  [sg.Text('Has,'+ ' ' + str(fish_score_temp[0][1][0]) + ' ' + 'votes')],
                   [sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish2.png')],
-                  [sg.Text('Has,' + str(fish_score_temp[1][1][0]) +'votes')],
+                  [sg.Text('Has,' + ' ' + str(fish_score_temp[1][1][0]) + ' ' +'votes')],
                   [sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish3.png')],
-                  [sg.Text('Has,' + str(fish_score_temp[2][1][0]) + 'votes')]]
+                  [sg.Text('Has,' + ' ' + str(fish_score_temp[2][1][0]) + ' ' + 'votes')]]
         col2 = [[sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish4.png')],
-                  [sg.Text('Has,'+ str(fish_score_temp[3][1][0]) + 'votes')],
+                  [sg.Text('Has,'+ ' ' + str(fish_score_temp[3][1][0]) + ' ' + 'votes')],
                   [sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish5.png')],
-                  [sg.Text('Has,' + str(fish_score_temp[4][1][0]) +'votes')],
+                  [sg.Text('Has,' +' ' + str(fish_score_temp[4][1][0]) + ' ' +'votes')],
                   [sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish6.png')],
-                  [sg.Text('Has,' + str(fish_score_temp[5][1][0]) + 'votes')]]
+                  [sg.Text('Has,' + ' ' + str(fish_score_temp[5][1][0]) + ' ' + 'votes')]]
         col3 = [[sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish7.png')],
-                  [sg.Text('Has,'+ str(fish_score_temp[6][1][0]) + 'votes')],
+                  [sg.Text('Has,'+ ' ' + str(fish_score_temp[6][1][0]) +' ' + 'votes')],
                   [sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish8.png')],
-                  [sg.Text('Has,' + str(fish_score_temp[7][1][0]) +'votes')],
+                  [sg.Text('Has,' + ' ' +str(fish_score_temp[7][1][0]) +' '+'votes')],
                   [sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish9.png')],
-                  [sg.Text('Has,' + str(fish_score_temp[8][1][0]) + 'votes')]]
+                  [sg.Text('Has,' + ' ' + str(fish_score_temp[8][1][0]) +' '+ 'votes')]]
         col4 = [[sg.Image(filename=r'C:\Users\koreg\OneDrive\Pictures\fish10.png')],
-                  [sg.Text('Has,'+ str(fish_score_temp[9][1][0]) + 'votes')]]
+                  [sg.Text('Has,'+ ' ' +str(fish_score_temp[9][1][0]) +' '+ 'votes')], [sg.Button('Vote for more fish')]]
         layout = [[sg.Column(col1, element_justification='c'), sg.Column(col2, element_justification='c'), sg.Column(col3, element_justification='c'), sg.Column(col4, element_justification='c')]]
+
 
 
 
 
         window = sg.Window('Fish',layout, location=(0,0))
         event, values = window.read()
-
+        if event == 'Vote for more fish':
+            continue
 
 
 
@@ -94,7 +132,12 @@ while True:
         break
     if event == 'Vote for more fish':
         continue
+
 window.close()
 open('fishscore.dat','w').close()
 open('fishscore.dat','wb')
 pickle.dump(fish_score_temp,open('fishscore.dat','wb'))
+
+
+
+ 
