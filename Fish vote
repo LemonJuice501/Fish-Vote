@@ -3,7 +3,7 @@ import random
 import pickle
 import os
 import sys
-import time
+
 if os.path.isfile('fishscore.dat'):
     fish_score_temp = pickle.load(open('fishscore.dat', 'rb'))
 
@@ -36,7 +36,9 @@ fish_status = 'fish'
 fish_status2 = 'fish'
 
 while True:
+
     while True:
+
         random_1 = random.randint(0,9)
         random_2 = random.randint(0,9)
         if random_1 == random_2:
@@ -71,11 +73,15 @@ while True:
             open('fishscore.dat', 'wb')
             pickle.dump(fish_score_temp, open('fishscore.dat', 'wb'))
         else:
-            layout = [[sg.Text('Incorrect password')]]
-            window = sg.Window('Password error', layout)
-            event, values = window.read()
-            time.sleep(10)
-            window.close()
+            layout = [[sg.Text('Incorrect password')], [sg.Button('Close')]]
+            windows = sg.Window('Password error', layout)
+            event, values = windows.read()
+            if event == 'Close':
+                windows.close()
+        window.close()
+        continue
+
+
 
     if event == 'Vote for top fish':
 
@@ -137,7 +143,5 @@ window.close()
 open('fishscore.dat','w').close()
 open('fishscore.dat','wb')
 pickle.dump(fish_score_temp,open('fishscore.dat','wb'))
-
-
-
- 
+    
+     
